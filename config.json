@@ -1,0 +1,7 @@
+{
+    "manifestFormat": "importmap",
+    "locations": {
+        "prod": "./importmaps/prod-import-map.json",
+        "dev": "./importmaps/dev-import-map.json"
+    }
+}
