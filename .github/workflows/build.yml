@@ -52,18 +52,21 @@ jobs:
         run: docker build . -t $CONTAINER_TAG
 
       - name: run docker container and save id
+        id: new-container-id
         run: |
           FILE="/$HOME/docker-containers-id/$FILE_NAME"
           docker run --cidfile $FILE -d -p 5000:5000 $CONTAINER_TAG
+          ID=`cat $FILE`
+          echo "id=$ID" >> $GITHUB_OUTPUT
 
       - name: copying essential files to container
         run: |
           DIR="$HOME/docker-buffer/$CONTAINER_TAG"
           if [ -d "$DIR" ]; then
-            DIRECTORY_CHECK=`docker exec -i ${{steps.container-id.outputs.id}} sh -c "test -d /app && echo 1 || echo 0"`
+            DIRECTORY_CHECK=`docker exec -i ${{steps.new-container-id.outputs.id}} sh -c "test -d /app && echo 1 || echo 0"`
 
             if [ "$DIRECTORY_CHECK" -eq 1 ]; then
-              docker cp "$DIR/importmaps" ${{steps.container-id.outputs.id}}:/app/ 
+              docker cp "$DIR/importmaps" ${{steps.new-container-id.outputs.id}}:/app/ 
               rm -r $DIR
             fi
           fi
