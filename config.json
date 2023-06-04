@@ -3,5 +3,6 @@
     "locations": {
         "prod": "./importmaps/prod-import-map.json",
         "dev": "./importmaps/dev-import-map.json"
-    }
+    },
+    "urlSafeist": ["http://localhost"]
 }
